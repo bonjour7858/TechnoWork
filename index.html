@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmic Drift - Le jeu de survie spatial</title>
+    <title>Cosmic Drift</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,6 +13,7 @@
         <nav>
             <a href="#hero">Accueil</a>
             <a href="#features">Fonctionnalités</a>
+            <a href="#minigame">Mini-Jeu</a>
             <a href="#reviews">Avis</a>
         </nav>
         <a href="#hero" class="btn-nav">Jouer</a>
@@ -21,7 +22,7 @@
     <section id="hero" class="hero">
         <div class="hero-content">
             <h1>Survivez aux confins de la galaxie</h1>
-            <p>Explorez des mondes inconnus, améliorez votre vaisseau et affrontez les dangers du vide spatial dans Cosmic Drift.</p>
+            <p>Explorez des mondes inconnus, améliorez votre vaisseau et affrontez les dangers du vide spatial.</p>
             <a href="#" class="btn-primary">Télécharger Gratuitement</a>
         </div>
     </section>
@@ -31,16 +32,25 @@
         <div class="features-grid">
             <div class="card">
                 <h3>🌍 Mondes Infinis</h3>
-                <p>Chaque partie génère un univers unique rempli de mystères et de planètes à explorer.</p>
+                <p>Chaque partie génère un univers unique rempli de mystères.</p>
             </div>
             <div class="card">
                 <h3>🚀 Vaisseau Personnalisable</h3>
-                <p>Débloquez des dizaines de modules et d'armes pour créer le vaisseau de combat ultime.</p>
+                <p>Débloquez des dizaines de modules et d'armes.</p>
             </div>
             <div class="card">
                 <h3>👾 Boss Épiques</h3>
-                <p>Testez vos réflexes face à des créatures colossales cachées au cœur des nébuleuses.</p>
+                <p>Testez vos réflexes face à des créatures colossales.</p>
             </div>
+        </div>
+    </section>
+
+    <section id="minigame" class="minigame-section">
+        <h2>Détruisez l'astéroïde !</h2>
+        <p>Cliquez le plus vite possible sur l'astéroïde.</p>
+        <div class="game-container">
+            <div id="score">Score : 0</div>
+            <div id="asteroid">🪨</div>
         </div>
     </section>
 
@@ -48,19 +58,20 @@
         <h2>Ce qu'en disent les joueurs</h2>
         <div class="reviews-grid">
             <div class="review-card">
-                <p>"Le meilleur jeu de survie spatiale de l'année. Les graphismes sont fous !"</p>
+                <p>"Le meilleur jeu de survie spatiale de l'année !"</p>
                 <span>- @Gamer92</span>
             </div>
             <div class="review-card">
-                <p>"Impossible de décrocher, la personnalisation des vaisseaux est ultra addictive."</p>
+                <p>"Impossible de décrocher, ultra addictif."</p>
                 <span>- @StellaPlayer</span>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2026 Cosmic Drift Studio. Tous droits réservés.</p>
+        <p>&copy; 2026 Cosmic Drift Studio</p>
     </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
