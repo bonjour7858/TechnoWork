@@ -62,7 +62,6 @@ nav a:hover {
     color: #ffffff;
 }
 
-/* Section Hero (Accueil) */
 .hero {
     height: 100vh;
     display: flex;
@@ -109,9 +108,9 @@ nav a:hover {
     text-align: center;
 }
 
-.features h2, .reviews h2 {
+.features h2, .reviews h2, .minigame-section h2 {
     font-size: 2.2rem;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     color: #ffffff;
 }
 
@@ -142,6 +141,53 @@ nav a:hover {
 
 .card p {
     color: #9ca3af;
+}
+
+.minigame-section {
+    padding: 80px 50px;
+    text-align: center;
+    background-color: #0e1424;
+}
+
+.minigame-section p {
+    color: #9ca3af;
+    margin-bottom: 20px;
+}
+
+.game-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    height: 300px;
+    background-color: #151c2f;
+    margin: 0 auto;
+    border-radius: 12px;
+    border: 2px solid #1f293d;
+    overflow: hidden;
+}
+
+#score {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #06b6d4;
+    z-index: 10;
+}
+
+#asteroid {
+    position: absolute;
+    font-size: 3rem;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s;
+    top: 100px;
+    left: 200px;
+}
+
+#asteroid:active {
+    transform: scale(0.8);
 }
 
 .reviews {
