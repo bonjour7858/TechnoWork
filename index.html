@@ -13,17 +13,17 @@
         <nav>
             <a href="#hero">Accueil</a>
             <a href="#features">Fonctionnalités</a>
-            <a href="#minigame">Mini-Jeu</a>
+            <a href="#minigame">Jouer</a>
             <a href="#reviews">Avis</a>
         </nav>
-        <a href="#hero" class="btn-nav">Jouer</a>
+        <a href="#minigame" class="btn-nav">Jouer</a>
     </header>
 
     <section id="hero" class="hero">
         <div class="hero-content">
             <h1>Survivez aux confins de la galaxie</h1>
             <p>Explorez des mondes inconnus, améliorez votre vaisseau et affrontez les dangers du vide spatial.</p>
-            <a href="#" class="btn-primary">Télécharger Gratuitement</a>
+            <a href="#minigame" class="btn-primary">Jouer au mini-jeu</a>
         </div>
     </section>
 
@@ -46,11 +46,12 @@
     </section>
 
     <section id="minigame" class="minigame-section">
-        <h2>Détruisez l'astéroïde !</h2>
-        <p>Cliquez le plus vite possible sur l'astéroïde.</p>
+        <h2>Salle d'arcade spatiale</h2>
+        <p>Utilisez les flèches <b>Gauche</b> et <b>Droite</b> pour bouger, et <b>Espace</b> pour tirer !</p>
+        
         <div class="game-container">
-            <div id="score">Score : 0</div>
-            <div id="asteroid">🪨</div>
+            <!-- La zone de dessin du jeu -->
+            <canvas id="gameCanvas" width="480" height="320"></canvas>
         </div>
     </section>
 
