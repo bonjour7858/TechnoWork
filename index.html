@@ -37,7 +37,7 @@
             </div>
             <div class="card">
                 <h3>🚀 Vaisseau Personnalisable</h3>
-                <p>Coming Soon</p>
+                <p>Coming Soon.</p>
             </div>
             <div class="card">
                 <h3>👾 Boss Épiques</h3>
@@ -50,6 +50,14 @@
         <h2>Exploration Spatiale 3D</h2>
         <p>Utilisez les flèches <b>Gauche/Droite</b> sur PC, ou <b>glissez votre doigt</b> sur mobile !</p>
         
+        <div class="difficulty-selector">
+            <button class="diff-btn" onclick="setDifficulty('facile')">Facile</button>
+            <button class="diff-btn active" onclick="setDifficulty('moyen')">Moyen</button>
+            <button class="diff-btn" onclick="setDifficulty('difficile')">Difficile</button>
+            <button class="diff-btn" onclick="setDifficulty('hard')">Hard</button>
+            <button class="diff-btn" onclick="setDifficulty('impossible')">Impossible</button>
+        </div>
+
         <div class="game-container">
             <div id="score">Cristaux : 0</div>
             <div id="canvas-container"></div>
@@ -71,7 +79,7 @@
             </div>
             <div class="review-card">
                 <p>"La 3D est super fluide et le gameplay est ultra relaxant."</p>
-                <span>- @AstroGirl</span>
+                <span>- @LeMecCool</span>
             </div>
         </div>
     </section>
