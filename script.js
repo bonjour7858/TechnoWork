@@ -6,8 +6,7 @@ let player = {
     y: canvas.height - 35,
     width: 30,
     height: 20,
-    speed: 5,
-    dx: 0
+    speed: 5
 };
 
 let bullets = [];
@@ -20,7 +19,6 @@ let keys = {};
 window.addEventListener("keydown", (e) => {
     keys[e.code] = true;
     if (e.code === "Space" && !gameOver) {
-        // Tirer un laser
         bullets.push({
             x: player.x + player.width / 2 - 3,
             y: player.y,
@@ -47,11 +45,9 @@ function spawnEnemy() {
     }
 }
 
-// Boucle principale du jeu
 function update() {
     if (gameOver) return;
 
-    // Mouvement du joueur
     if (keys["ArrowLeft"] && player.x > 0) {
         player.x -= player.speed;
     }
@@ -89,12 +85,10 @@ function update() {
     }
 }
 
-// Dessiner les éléments sur le canvas
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (!gameOver) {
-        // Dessiner le joueur (vaisseau)
         ctx.fillStyle = "#06b6d4";
         ctx.fillRect(player.x, player.y, player.width, player.height);
 
