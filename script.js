@@ -29,6 +29,9 @@ window.addEventListener('DOMContentLoaded', () => {
     let score = 0;
     let isGameOver = false;
 
+    let gameSpeed = 0.08; 
+    let currentDifficulty = 'moyen';
+
     const crystalGeometry = new THREE.OctahedronGeometry(0.3);
     const crystalMaterial = new THREE.MeshStandardMaterial({ color: 0x06b6d4, emissive: 0x06b6d4, emissiveIntensity: 0.5 });
 
@@ -38,6 +41,32 @@ window.addEventListener('DOMContentLoaded', () => {
     const scoreDisplay = document.getElementById("score");
     const gameOverScreen = document.getElementById("game-over-screen");
     const finalScoreDisplay = document.getElementById("final-score");
+
+    window.setDifficulty = function(level) {
+        currentDifficulty = level;
+        
+        document.querySelectorAll('.diff-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        switch(level) {
+            case 'facile':
+                gameSpeed = 0.05;
+                break;
+            case 'moyen':
+                gameSpeed = 0.08;
+                break;
+            case 'difficile':
+                gameSpeed = 0.12;
+                break;
+            case 'hard':
+                gameSpeed = 0.16;
+                break;
+            case 'impossible':
+                gameSpeed = 0.22;
+                break;
+        }
+        restartGame();
+    }
 
     function spawnCrystal() {
         const crystal = new THREE.Mesh(crystalGeometry, crystalMaterial);
@@ -100,7 +129,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         for (let i = crystals.length - 1; i >= 0; i--) {
             let c = crystals[i];
-            c.position.z += 0.08;
+            c.position.z += gameSpeed;
             c.rotation.y += 0.02;
 
             if (ship.position.distanceTo(c.position) < 1.0) {
@@ -118,7 +147,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         for (let i = obstacles.length - 1; i >= 0; i--) {
             let o = obstacles[i];
-            o.position.z += 0.09;
+            o.position.z += gameSpeed + 0.01;
             o.rotation.x += 0.01;
 
             if (ship.position.distanceTo(o.position) < 0.9) {
