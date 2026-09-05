@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cosmic Drift</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
@@ -13,7 +14,7 @@
         <nav>
             <a href="#hero">Accueil</a>
             <a href="#features">Fonctionnalités</a>
-            <a href="#minigame">Jouer</a>
+            <a href="#minigame">Jeu 3D</a>
             <a href="#reviews">Avis</a>
         </nav>
         <a href="#minigame" class="btn-nav">Jouer</a>
@@ -23,7 +24,7 @@
         <div class="hero-content">
             <h1>Survivez aux confins de la galaxie</h1>
             <p>Explorez des mondes inconnus, améliorez votre vaisseau et affrontez les dangers du vide spatial.</p>
-            <a href="#minigame" class="btn-primary">Jouer au mini-jeu</a>
+            <a href="#minigame" class="btn-primary">Jouer en 3D</a>
         </div>
     </section>
 
@@ -46,11 +47,12 @@
     </section>
 
     <section id="minigame" class="minigame-section">
-        <h2>Salle d'arcade spatiale</h2>
-        <p>Utilisez les flèches <b>Gauche</b> et <b>Droite</b> pour bouger, et <b>Espace</b> pour tirer !</p>
+        <h2>Exploration Spatiale 3D</h2>
+        <p>Utilisez les flèches <b>Gauche</b> et <b>Droite</b> pour piloter et attraper les cristaux lumineux !</p>
         
         <div class="game-container">
-            <canvas id="gameCanvas" width="480" height="320"></canvas>
+            <div id="score">Cristaux : 0</div>
+            <div id="canvas-container"></div>
         </div>
     </section>
 
