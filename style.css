@@ -166,7 +166,7 @@ nav a:hover {
     overflow: hidden;
     background-color: #05070c;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    touch-action: none; /* Empêche le scroll de la page sur mobile quand on touche le jeu */
+    touch-action: none;
 }
 
 #canvas-container {
