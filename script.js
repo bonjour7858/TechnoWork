@@ -52,12 +52,17 @@ function spawnObstacle() {
     obstacles.push(obstacle);
 }
 
-for (let i = 0; i < 4; i++) spawnCrystal();
-for (let i = 0; i < 3; i++) spawnObstacle();
+for (let i = 0; i < 4; i++) {
+    spawnCrystal();
+}
+for (let i = 0; i < 3; i++) {
+    spawnObstacle();
+}
 
 let moveLeft = false;
 let moveRight = false;
 
+window.addEventListener("keydown", (e) => {
     if (e.code === "ArrowLeft") moveLeft = true;
     if (e.code === "ArrowRight") moveRight = true;
 });
@@ -70,7 +75,7 @@ window.addEventListener("keyup", (e) => {
 container.addEventListener("touchmove", (e) => {
     let touchX = e.touches[0].clientX;
     let rect = container.getBoundingClientRect();
-    let xRelatif = touchX - rect.left; // Position du doigt dans le cadre
+    let xRelatif = touchX - rect.left;
     
     let targetX = (xRelatif / container.clientWidth) * 6 - 3;
     if (targetX < -3) targetX = -3;
@@ -79,12 +84,16 @@ container.addEventListener("touchmove", (e) => {
 }, { passive: true });
 
 function animate() {
-    if (isGameOver) return; 
+    if (isGameOver) return;
 
     requestAnimationFrame(animate);
 
-    if (moveLeft && ship.position.x > -3) ship.position.x -= 0.1;
-    if (moveRight && ship.position.x < 3) ship.position.x += 0.1;
+    if (moveLeft && ship.position.x > -3) {
+        ship.position.x -= 0.1;
+    }
+    if (moveRight && ship.position.x < 3) {
+        ship.position.x += 0.1;
+    }
 
     ship.rotation.z = -ship.position.x * 0.3;
 
@@ -134,13 +143,17 @@ window.restartGame = function() {
     obstacles = [];
 
     score = 0;
-    scoreDisplay.innerText = "Cristaux : 0";
+    scoreDisplay.innerText = "Cristaux : " + score;
     ship.position.x = 0;
     isGameOver = false;
     gameOverScreen.classList.add("hidden");
 
-    for (let i = 0; i < 4; i++) spawnCrystal();
-    for (let i = 0; i < 3; i++) spawnObstacle();
+    for (let i = 0; i < 4; i++) {
+        spawnCrystal();
+    }
+    for (let i = 0; i < 3; i++) {
+        spawnObstacle();
+    }
 
     animate();
 };
