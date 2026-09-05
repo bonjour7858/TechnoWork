@@ -48,11 +48,17 @@
 
     <section id="minigame" class="minigame-section">
         <h2>Exploration Spatiale 3D</h2>
-        <p>Utilisez les flèches <b>Gauche</b> et <b>Droite</b> pour piloter et attraper les cristaux lumineux !</p>
+        <p>Utilisez les flèches <b>Gauche/Droite</b> sur PC, ou <b>glissez votre doigt</b> sur mobile !</p>
         
         <div class="game-container">
             <div id="score">Cristaux : 0</div>
             <div id="canvas-container"></div>
+            
+            <div id="game-over-screen" class="hidden">
+                <h2>Oups, collision !</h2>
+                <p id="final-score">Score final : 0</p>
+                <button id="restart-btn" onclick="restartGame()">Rejouer</button>
+            </div>
         </div>
     </section>
 
