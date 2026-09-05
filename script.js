@@ -1,126 +1,97 @@
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
+const container = document.getElementById("canvas-container");
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x05070c);
 
-let player = {
-    x: canvas.width / 2 - 15,
-    y: canvas.height - 35,
-    width: 30,
-    height: 20,
-    speed: 5
-};
+const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
+camera.position.set(0, 3, 6);
+camera.lookAt(0, 0, 0);
 
-let bullets = [];
-let enemies = [];
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(container.clientWidth, container.clientHeight);
+container.appendChild(renderer.domElement);
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0x06b6d4, 2, 50);
+pointLight.position.set(0, 5, 2);
+scene.add(pointLight);
+
+const shipGeometry = new THREE.ConeGeometry(0.5, 1.2, 4);
+const shipMaterial = new THREE.MeshStandardMaterial({ color: 0x6366f1, roughness: 0.3 });
+const ship = new THREE.Mesh(shipGeometry, shipMaterial);
+ship.rotation.x = Math.PI / 2;
+scene.add(ship);
+
+let crystals = [];
+const crystalGeometry = new THREE.OctahedronGeometry(0.3);
+const crystalMaterial = new THREE.MeshStandardMaterial({ color: 0x06b6d4, emissive: 0x06b6d4, emissiveIntensity: 0.5 });
+
+function spawnCrystal() {
+    const crystal = new THREE.Mesh(crystalGeometry, crystalMaterial);
+    crystal.position.set((Math.random() - 0.5) * 6, 0, -15 - Math.random() * 10);
+    scene.add(crystal);
+    crystals.push(crystal);
+}
+
+for(let i = 0; i < 5; i++) {
+    spawnCrystal();
+}
+
 let score = 0;
-let gameOver = false;
+const scoreDisplay = document.getElementById("score");
 
-let keys = {};
+// Commandes clavier
+let moveLeft = false;
+let moveRight = false;
 
 window.addEventListener("keydown", (e) => {
-    keys[e.code] = true;
-    if (e.code === "Space" && !gameOver) {
-        bullets.push({
-            x: player.x + player.width / 2 - 3,
-            y: player.y,
-            width: 6,
-            height: 12,
-            speed: 7
-        });
-    }
+    if (e.code === "ArrowLeft") moveLeft = true;
+    if (e.code === "ArrowRight") moveRight = true;
 });
 
 window.addEventListener("keyup", (e) => {
-    keys[e.code] = false;
+    if (e.code === "ArrowLeft") moveLeft = false;
+    if (e.code === "ArrowRight") moveRight = false;
 });
 
-function spawnEnemy() {
-    if (Math.random() < 0.02 && !gameOver) {
-        enemies.push({
-            x: Math.random() * (canvas.width - 30),
-            y: -20,
-            width: 30,
-            height: 20,
-            speed: 2
-        });
-    }
-}
+// Boucle d'animation 3D
+function animate() {
+    requestAnimationFrame(animate);
 
-function update() {
-    if (gameOver) return;
+    if (moveLeft && ship.position.x > -3) ship.position.x -= 0.1;
+    if (moveRight && ship.position.x < 3) ship.position.x += 0.1;
 
-    if (keys["ArrowLeft"] && player.x > 0) {
-        player.x -= player.speed;
-    }
-    if (keys["ArrowRight"] && player.x < canvas.width - player.width) {
-        player.x += player.speed;
-    }
+    ship.rotation.z = -ship.position.x * 0.3;
 
-    for (let i = bullets.length - 1; i >= 0; i--) {
-        bullets[i].y -= bullets[i].speed;
-        if (bullets[i].y < 0) {
-            bullets.splice(i, 1);
+    for (let i = crystals.length - 1; i >= 0; i--) {
+        let c = crystals[i];
+        c.position.z += 0.08; 
+        c.rotation.y += 0.02; 
+
+        let distance = ship.position.distanceTo(c.position);
+        if (distance < 1.0) {
+            scene.remove(c);
+            crystals.splice(i, 1);
+            score += 1;
+            scoreDisplay.innerText = "Cristaux : " + score;
+            spawnCrystal(); 
+        }
+        
+        else if (c.position.z > 2) {
+            scene.remove(c);
+            crystals.splice(i, 1);
+            spawnCrystal();
         }
     }
 
-    spawnEnemy();
-    for (let i = enemies.length - 1; i >= 0; i--) {
-        enemies[i].y += enemies[i].speed;
-
-        if (enemies[i].y > canvas.height) {
-            gameOver = true;
-        }
-
-        for (let j = bullets.length - 1; j >= 0; j--) {
-            let b = bullets[j];
-            let e = enemies[i];
-
-            if (b.x < e.x + e.width && b.x + b.width > e.x &&
-                b.y < e.y + e.height && b.y + b.height > e.y) {
-                enemies.splice(i, 1);
-                bullets.splice(j, 1);
-                score += 10;
-                break;
-            }
-        }
-    }
+    renderer.render(scene, camera);
 }
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+animate();
 
-    if (!gameOver) {
-        ctx.fillStyle = "#06b6d4";
-        ctx.fillRect(player.x, player.y, player.width, player.height);
-
-        ctx.fillStyle = "#6366f1";
-        bullets.forEach(b => {
-            ctx.fillRect(b.x, b.y, b.width, b.height);
-        });
-
-        ctx.fillStyle = "#ef4444";
-        enemies.forEach(e => {
-            ctx.fillRect(e.x, e.y, e.width, e.height);
-        });
-
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "16px Segoe UI";
-        ctx.fillText("Score : " + score, 15, 25);
-    } else {
-        ctx.fillStyle = "#ffffff";
-        ctx.font = "24px Segoe UI";
-        ctx.textAlign = "center";
-        ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 10);
-        ctx.font = "14px Segoe UI";
-        ctx.fillText("Score final : " + score, canvas.width / 2, canvas.height / 2 + 20);
-        ctx.fillText("Actualisez la page pour rejouer", canvas.width / 2, canvas.height / 2 + 50);
-        ctx.textAlign = "left";
-    }
-}
-
-function loop() {
-    update();
-    draw();
-    requestAnimationFrame(loop);
-}
-
-loop();
+window.addEventListener('resize', () => {
+    camera.aspect = container.clientWidth / container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+});
