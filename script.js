@@ -1,5 +1,4 @@
 const container = document.getElementById("canvas-container");
-
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x05070c);
 
@@ -25,27 +24,40 @@ ship.rotation.x = Math.PI / 2;
 scene.add(ship);
 
 let crystals = [];
+let obstacles = [];
+let score = 0;
+let isGameOver = false;
+
 const crystalGeometry = new THREE.OctahedronGeometry(0.3);
 const crystalMaterial = new THREE.MeshStandardMaterial({ color: 0x06b6d4, emissive: 0x06b6d4, emissiveIntensity: 0.5 });
 
+const obstacleGeometry = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+const obstacleMaterial = new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.4 });
+
+const scoreDisplay = document.getElementById("score");
+const gameOverScreen = document.getElementById("game-over-screen");
+const finalScoreDisplay = document.getElementById("final-score");
+
 function spawnCrystal() {
     const crystal = new THREE.Mesh(crystalGeometry, crystalMaterial);
-    crystal.position.set((Math.random() - 0.5) * 6, 0, -15 - Math.random() * 10);
+    crystal.position.set((Math.random() - 0.5) * 5, 0, -15 - Math.random() * 10);
     scene.add(crystal);
     crystals.push(crystal);
 }
 
-for (let i = 0; i < 5; i++) {
-    spawnCrystal();
+function spawnObstacle() {
+    const obstacle = new THREE.Mesh(obstacleGeometry, obstacleMaterial);
+    obstacle.position.set((Math.random() - 0.5) * 5, 0, -20 - Math.random() * 10);
+    scene.add(obstacle);
+    obstacles.push(obstacle);
 }
 
-let score = 0;
-const scoreDisplay = document.getElementById("score");
+for (let i = 0; i < 4; i++) spawnCrystal();
+for (let i = 0; i < 3; i++) spawnObstacle();
 
 let moveLeft = false;
 let moveRight = false;
 
-window.addEventListener("keydown", (e) => {
     if (e.code === "ArrowLeft") moveLeft = true;
     if (e.code === "ArrowRight") moveRight = true;
 });
@@ -55,7 +67,20 @@ window.addEventListener("keyup", (e) => {
     if (e.code === "ArrowRight") moveRight = false;
 });
 
+container.addEventListener("touchmove", (e) => {
+    let touchX = e.touches[0].clientX;
+    let rect = container.getBoundingClientRect();
+    let xRelatif = touchX - rect.left; // Position du doigt dans le cadre
+    
+    let targetX = (xRelatif / container.clientWidth) * 6 - 3;
+    if (targetX < -3) targetX = -3;
+    if (targetX > 3) targetX = 3;
+    ship.position.x = targetX;
+}, { passive: true });
+
 function animate() {
+    if (isGameOver) return; 
+
     requestAnimationFrame(animate);
 
     if (moveLeft && ship.position.x > -3) ship.position.x -= 0.1;
@@ -68,8 +93,7 @@ function animate() {
         c.position.z += 0.08;
         c.rotation.y += 0.02;
 
-        let distance = ship.position.distanceTo(c.position);
-        if (distance < 1.0) {
+        if (ship.position.distanceTo(c.position) < 1.0) {
             scene.remove(c);
             crystals.splice(i, 1);
             score += 1;
@@ -82,10 +106,44 @@ function animate() {
         }
     }
 
+    for (let i = obstacles.length - 1; i >= 0; i--) {
+        let o = obstacles[i];
+        o.position.z += 0.09;
+        o.rotation.x += 0.01;
+
+        if (ship.position.distanceTo(o.position) < 0.9) {
+            isGameOver = true;
+            finalScoreDisplay.innerText = "Score final : " + score;
+            gameOverScreen.classList.remove("hidden");
+        } else if (o.position.z > 2) {
+            scene.remove(o);
+            obstacles.splice(i, 1);
+            spawnObstacle();
+        }
+    }
+
     renderer.render(scene, camera);
 }
 
 animate();
+
+window.restartGame = function() {
+    crystals.forEach(c => scene.remove(c));
+    obstacles.forEach(o => scene.remove(o));
+    crystals = [];
+    obstacles = [];
+
+    score = 0;
+    scoreDisplay.innerText = "Cristaux : 0";
+    ship.position.x = 0;
+    isGameOver = false;
+    gameOverScreen.classList.add("hidden");
+
+    for (let i = 0; i < 4; i++) spawnCrystal();
+    for (let i = 0; i < 3; i++) spawnObstacle();
+
+    animate();
+};
 
 window.addEventListener('resize', () => {
     camera.aspect = container.clientWidth / container.clientHeight;
