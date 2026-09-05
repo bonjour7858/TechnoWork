@@ -1,4 +1,5 @@
 const container = document.getElementById("canvas-container");
+
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x05070c);
 
@@ -34,14 +35,13 @@ function spawnCrystal() {
     crystals.push(crystal);
 }
 
-for(let i = 0; i < 5; i++) {
+for (let i = 0; i < 5; i++) {
     spawnCrystal();
 }
 
 let score = 0;
 const scoreDisplay = document.getElementById("score");
 
-// Commandes clavier
 let moveLeft = false;
 let moveRight = false;
 
@@ -55,7 +55,6 @@ window.addEventListener("keyup", (e) => {
     if (e.code === "ArrowRight") moveRight = false;
 });
 
-// Boucle d'animation 3D
 function animate() {
     requestAnimationFrame(animate);
 
@@ -66,8 +65,8 @@ function animate() {
 
     for (let i = crystals.length - 1; i >= 0; i--) {
         let c = crystals[i];
-        c.position.z += 0.08; 
-        c.rotation.y += 0.02; 
+        c.position.z += 0.08;
+        c.rotation.y += 0.02;
 
         let distance = ship.position.distanceTo(c.position);
         if (distance < 1.0) {
@@ -75,10 +74,8 @@ function animate() {
             crystals.splice(i, 1);
             score += 1;
             scoreDisplay.innerText = "Cristaux : " + score;
-            spawnCrystal(); 
-        }
-        
-        else if (c.position.z > 2) {
+            spawnCrystal();
+        } else if (c.position.z > 2) {
             scene.remove(c);
             crystals.splice(i, 1);
             spawnCrystal();
